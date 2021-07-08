@@ -3,12 +3,13 @@ import MealItemForm from './MealItemForm/MealItemForm';
 import classes from './MealItem.module.css';
 
 interface MealItemProps {
+  id: string;
   name: string;
   description: string;
   price: number;
 }
 
-const MealItem = ({ name, description, price }: MealItemProps) => {
+const MealItem = ({ id, name, description, price }: MealItemProps) => {
   const priceTag = `$${price.toFixed(2)}`;
 
   return (
@@ -18,7 +19,9 @@ const MealItem = ({ name, description, price }: MealItemProps) => {
         <div className={classes.description}>{description}</div>
         <div className={classes.price}>{priceTag}</div>
       </div>
-      <div></div>
+      <div>
+        <MealItemForm id={id} />
+      </div>
     </li>
   );
 };
