@@ -1,7 +1,11 @@
 import React from 'react';
 
+interface Item {
+  amount: number;
+}
+
 export interface CartContextData {
-  items: [];
+  items: Item[];
   totalAmount: number;
   addItem: (item: any) => void;
   removeItem: (id: string) => void;
