@@ -1,22 +1,14 @@
 import React from 'react';
 
-export interface Item {
-  id: string;
-  name: string;
-  price: number;
-  amount: number;
-}
+import { CartItem } from './CartProvider';
 
-export interface CartData {
-  items: Item[];
+interface CartContextState {
+  items: CartItem[];
   totalAmount: number;
-}
-
-export interface CartContextProps extends CartData {
-  addItem: (item: Item) => void;
+  addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
 }
 
-const CartContext = React.createContext<Partial<CartContextProps>>({});
+const CartContext = React.createContext({} as CartContextState);
 
 export default CartContext;

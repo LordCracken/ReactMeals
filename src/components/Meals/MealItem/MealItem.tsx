@@ -14,10 +14,11 @@ interface MealItemProps {
 
 const MealItem = ({ id, name, description, price }: MealItemProps) => {
   const cartCtx = useContext(CartContext);
+
   const priceTag = `$${price.toFixed(2)}`;
 
   const addToCartHandler = (amount: number) => {
-    cartCtx.addItem!({
+    cartCtx.addItem({
       id: id,
       name: name,
       amount: amount,

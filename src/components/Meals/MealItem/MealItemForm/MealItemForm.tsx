@@ -13,7 +13,7 @@ const MealItemForm = ({ id, onAddToCart }: MealItemFormProps) => {
   const [amountIsValid, setAmountIsValid] = useState<boolean>(true);
   const amountInputRef = useRef<HTMLInputElement>(null);
 
-  const submitHandler = (event: React.FormEvent) => {
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const enteredAmount = amountInputRef.current!.value;
@@ -32,7 +32,7 @@ const MealItemForm = ({ id, onAddToCart }: MealItemFormProps) => {
       <Input
         ref={amountInputRef}
         label="Amount"
-        input={{ id: `amount${id}`, type: 'number', min: '1', max: '5', step: '1', defaultValue: '1' }}
+        input={{ id: `amount-${id}`, type: 'number', min: 1, max: 5, step: 1, defaultValue: '1' }}
       />
       <button>+ Add</button>
       {!amountIsValid && <p>Please enter a valid amount (1-5).</p>}

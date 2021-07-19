@@ -3,11 +3,11 @@ import React from 'react';
 import classes from './Input.module.css';
 
 interface InputProps {
-  input: { type: string; id?: string; min?: string; max?: string; step?: string; defaultValue?: string };
   label: string;
+  input: { id: string; type: 'text' | 'number'; min?: number; max?: number; step?: number; defaultValue?: string };
 }
 
-const Input = React.forwardRef(({ input, label }: InputProps, ref: React.ForwardedRef<HTMLInputElement>) => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, input }, ref) => {
   return (
     <div className={classes.input}>
       <label htmlFor={input.id}>{label}</label>

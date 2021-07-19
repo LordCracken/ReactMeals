@@ -11,21 +11,23 @@ interface HeaderCartButtonProps {
 
 const HeaderCartButton = ({ onClick }: HeaderCartButtonProps) => {
   const [btnIsHighlighted, setBtnIsHighlighted] = useState<boolean>(false);
-
   const cartCtx = useContext(CartContext);
 
-  const numberOfCartItems = cartCtx.items!.reduce((curNumber, item) => curNumber + item.amount, 0);
+  const { items } = cartCtx;
+
+  const numberOfCartItems = items.reduce((curNumber, item) => curNumber + item.amount, 0);
 
   const btnClasses = `${classes.button} ${btnIsHighlighted ? classes.bump : ''}`;
 
   useEffect(() => {
-    if (!cartCtx.items!.length) return;
+    if (!items) return;
 
     setBtnIsHighlighted(true);
+
     const timer = setTimeout(() => setBtnIsHighlighted(false), 300);
 
     return () => clearTimeout(timer);
-  }, [cartCtx.items]);
+  }, [items]);
 
   return (
     <button className={btnClasses} onClick={onClick}>
