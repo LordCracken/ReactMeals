@@ -5,7 +5,7 @@ import MealItemForm from './MealItemForm/MealItemForm';
 
 import classes from './MealItem.module.css';
 
-interface MealItemProps {
+export interface MealItemProps {
   id: string;
   name: string;
   description: string;
