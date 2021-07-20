@@ -8,10 +8,14 @@ import classes from './AvailableMeals.module.css';
 const AvailableMeals = () => {
   const [meals, setMeals] = useState<MealItemProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [httpError, setHttpError] = useState<boolean>();
 
   useEffect(() => {
     const fetchMeals = async () => {
       const response = await fetch('https://reactmeals-6aaed-default-rtdb.firebaseio.com/meals.json');
+
+      if (!response.ok) throw new Error(`Get error with code ${response.status}!`);
+
       const responseData = await response.json();
 
       const loadedMeals = [];
@@ -29,13 +33,24 @@ const AvailableMeals = () => {
       setIsLoading(false);
     };
 
-    fetchMeals();
+    fetchMeals().catch(error => {
+      setIsLoading(false);
+      setHttpError(error.message);
+    });
   }, []);
 
   if (isLoading) {
     return (
       <section className={classes['meals-loading']}>
         <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <section className={classes['meals-error']}>
+        <p>{httpError}</p>
       </section>
     );
   }

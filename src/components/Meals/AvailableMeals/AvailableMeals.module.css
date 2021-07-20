@@ -7,7 +7,14 @@
 
 .meals-loading {
   text-align: center;
+  font-size: 24px;
   color: #fff;
+}
+
+.meals-error {
+  text-align: center;
+  font-size: 24px;
+  color: #f00;
 }
 
 .meals ul {
