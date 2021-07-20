@@ -62,3 +62,8 @@
   border-color: #aa0b20;
   background-color: #ffeff1;
 }
+
+.invalid p {
+  margin: 0;
+  color: #aa0b20;
+}
