@@ -15,7 +15,7 @@ const Cart = ({ onClose }: CartProps) => {
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
-  const hasItems = !cartCtx.items;
+  const hasItems = !!cartCtx.items.length;
 
   const cartItemRemoveHandler = (id: string) => {
     cartCtx.removeItem(id);
