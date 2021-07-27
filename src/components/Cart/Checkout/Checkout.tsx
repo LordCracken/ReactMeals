@@ -2,14 +2,17 @@ import React, { useRef, useState } from 'react';
 
 import classes from './Checkout.module.css';
 
+import { UserData } from '../Cart';
+
 interface CheckoutProps {
+  onConfirm: (userData: UserData) => void;
   onCancel: () => void;
 }
 
 const isEmpty = (value: string) => !value.trim();
 const isNotPostal = (value: string) => value.trim().length !== 5;
 
-const Checkout = ({ onCancel }: CheckoutProps) => {
+const Checkout = ({ onConfirm, onCancel }: CheckoutProps) => {
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
     street: true,
@@ -47,6 +50,8 @@ const Checkout = ({ onCancel }: CheckoutProps) => {
     if (!formIsValid) {
       return;
     }
+
+    onConfirm({ name: enteredName, street: enteredStreet, city: enteredCity, postalCode: enteredPostal });
   };
 
   const nameControlClasses = `${classes.control} ${formInputsValidity.name ? '' : classes.invalid}`;

@@ -8,6 +8,13 @@ import Checkout from './Checkout/Checkout';
 
 import classes from './Cart.module.css';
 
+export interface UserData {
+  name: string;
+  street: string;
+  city: string;
+  postalCode: string;
+}
+
 interface CartProps {
   onClose: () => void;
 }
@@ -28,6 +35,13 @@ const Cart = ({ onClose }: CartProps) => {
   };
 
   const orderHandler = () => setIsCheckout(true);
+
+  const submitOrderHandler = (userData: UserData) => {
+    fetch('https://reactmeals-6aaed-default-rtdb.firebaseio.com/orders.json', {
+      method: 'POST',
+      body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
+    });
+  };
 
   const cartItems = (
     <ul className={classes['cart-items']}>
@@ -64,7 +78,7 @@ const Cart = ({ onClose }: CartProps) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={onClose} />}
+      {isCheckout && <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />}
       {!isCheckout && modalActions}
     </Modal>
   );
