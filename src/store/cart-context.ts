@@ -7,6 +7,7 @@ interface CartContextState {
   totalAmount: number;
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
+  clearCart: () => void;
 }
 
 const CartContext = React.createContext({} as CartContextState);
