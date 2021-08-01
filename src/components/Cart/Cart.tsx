@@ -84,8 +84,8 @@ const Cart = ({ onClose }: CartProps) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />}
-      {!isCheckout && modalActions}
+      {isCheckout && hasItems && <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />}
+      {(!isCheckout || !hasItems) && modalActions}
     </>
   );
 
