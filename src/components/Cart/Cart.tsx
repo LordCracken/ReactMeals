@@ -23,6 +23,7 @@ const Cart = ({ onClose }: CartProps) => {
   const [isCheckout, setIsCheckout] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [didSubmit, setDidSubmit] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
@@ -38,15 +39,25 @@ const Cart = ({ onClose }: CartProps) => {
 
   const orderHandler = () => setIsCheckout(true);
 
+  const tryAgainHandler = () => setError(null);
+
   const submitOrderHandler = async (userData: UserData) => {
     setIsSubmitting(true);
-    await fetch('https://reactmeals-6aaed-default-rtdb.firebaseio.com/orders.json', {
-      method: 'POST',
-      body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
-    });
-    setIsSubmitting(false);
-    setDidSubmit(true);
-    cartCtx.clearCart();
+    try {
+      const response = await fetch('https://reactmeals-6aaed-default-rtdb.firebaseio.com/orders.json', {
+        method: 'POST',
+        body: JSON.stringify({ user: userData, orderedItems: cartCtx.items }),
+      });
+
+      if (!response.ok) throw new Error(`Catched error with ${response.status} status`);
+
+      setIsSubmitting(false);
+      setDidSubmit(true);
+      cartCtx.clearCart();
+    } catch (error) {
+      setIsSubmitting(false);
+      setError(error.message);
+    }
   };
 
   const cartItems = (
@@ -90,6 +101,19 @@ const Cart = ({ onClose }: CartProps) => {
   );
 
   const isSubmittingModalContent = <p>Sending order data...</p>;
+  const isErrorModalContent = (
+    <>
+      <p>{error}</p>
+      <div className={classes.actions}>
+        <button className={classes['button--alt']} onClick={onClose}>
+          Close
+        </button>
+        <button className={classes.button} onClick={tryAgainHandler}>
+          Try Again
+        </button>
+      </div>
+    </>
+  );
 
   const didSubmitModalContent = (
     <>
@@ -104,9 +128,10 @@ const Cart = ({ onClose }: CartProps) => {
 
   return (
     <Modal onClose={onClose}>
-      {!isSubmitting && !didSubmit && cartModalContent}
+      {!isSubmitting && !didSubmit && !error && cartModalContent}
       {isSubmitting && isSubmittingModalContent}
       {!isSubmitting && didSubmit && didSubmitModalContent}
+      {error && isErrorModalContent}
     </Modal>
   );
 };
